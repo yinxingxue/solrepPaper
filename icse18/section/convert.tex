@@ -1,0 +1,122 @@
+\section{Mathematical Formulation of the Problem}\label{sec:formulate}
+%Software companies that maintain an SPL want to respond to the various market and customers rapidly, while still considering a large amount of features and constraints among the features.
+To apply IP methods, logical formulae shown in Table \ref{table:constrains} are converted into inequalities to serve as linear constraints in IP.  %An internationally accepted and widely applied standard
+
+\subsection{Theory of Converting Logical Formulae to Inequalities}\label{sec:convert}
+Converting logical formulae (LF) into inequalities is a typical problem of OR. By BIP upon the inequalities, it can be rapidly decided whether the original given LFs can be satisfied and how to be satisfied if so.
+In \cite{Hooker:1988}, Hooker proposed and proved that the satisfiability problem of a conjunctive normal form (CNF) can be directly reduced to a BIP problem.
+Though detailed steps are not formalized in \cite{Hooker:1988}, the basic idea of conversion was explained. %First, any arbitrary logical formula should be represented as a conjunction of \emph{1-clause}, namely \emph{clause of degree one}. Here, \emph{clause of degree} $\beta$ asserts that there are at least $\beta$  literals (corresponding to variables in BIP) to be true.
+%Second,
+Generally, two ways can convert an arbitrary LF as a CNF. Except for each atomic proposition, if no extra variables are introduced for operations on several atomic propositions, the running time and length of the resulting CNF can increase exponentially with the number of atomic propositions in the original formula in the worse case \cite{DBLP:journals/cor/BlairJL86}. %But if with extra variables, the conversion can finish in linear time .
+%all the formulae in a system constitute the knowledge base, which is the conjunction of its formulae. For instance, constraints (1) to (13) in Table \ref{table:constrains} constitute the knowledge base of the model \emph{JCS}.
+
+\subsection{Fast Converting Logical Formulae from the SPL Models}\label{sec:convert}
+As different types of TCs and CTCs are actually not arbitrary LFs, the conversion can be done in linear time without introducing intermediate CNFs and extra variables. Let $|f_i|$ denote whether the $i$-th feature ($f_i$) is selected in a solution (see \S\ref{sec:background:mop}). We can deduce the following lemmas:
+%Owing to the specific types of constraints in SPL models, the constraints are actually not arbitrary logic formulae. In this case, can the conversion be done in linear time even without introducing extra variables? The answer is yes. It is unnecessary to represent all TCs and CTCs as CNFs.
+
+ %Different types of TCs and CTCs can be readily converted into inequalities  without introducing intermediate CNFs and extra variables. $|f_i|$ --- whether the $i$-th feature is inside the set of selected features  $F$  from $Fea(JCS)$ (see \S\ref{sec:background:mop})
+
+\begin{lem}\label{lem:optional}If feature $f$ is an Optional subfeature  of feature $f^\prime$, the linear inequality for the Optional relationship is
+  \begin{equation}
+  |f^\prime| - |f| \ge 0
+  \end{equation}
+  \end{lem}
+\begin{proof}
+  $f \Rightarrow f^\prime$  is \emph{true} according to the optional relationship. Thus we can infer $\neg f  \lor f^\prime$  is \emph{true}. As a CNF, it can be converted to the inequality $(1-|f|)+|f^\prime| \ge 1$, that is $  |f^\prime| - |f| \ge 0$.
+\end{proof}
+
+\vspace{-3mm}
+\begin{lem}\label{lem:mandatory}
+If feature $f$ is a Mandatory subfeature  of feature $f^\prime$, the linear equality for the Mandatory relationship is
+  \begin{equation}
+  |f^\prime| - |f| = 0
+  \end{equation}
+\end{lem}
+\begin{proof}
+  $f \Leftrightarrow f^\prime$ is \emph{true} according to the mandatory relationship. Thus we infer the CNF $ (\neg f  \lor f^\prime) \land ( \neg  f^\prime \lor  f)$  is \emph{true}. Two inequalities are deduced:  $(1-|f|)+|f^\prime| \ge 1$ and $(1-|f^\prime| )+ |f|\ge 1$. By unifying them, we infer $|f^\prime| - |f| = 0$.
+\end{proof}
+
+\vspace{-2mm}
+\begin{lem}If features $f_1$ ... $f_n$ are  the Or-subfeature of feature $f^\prime$, %the  equality for the Or relationship is
+%  \begin{equation}
+%  \prod\nolimits_{i=1}^{n}{(1- f_i)} + f^\prime  = 1
+%  \end{equation}
+%\noindent and
+the linear inequalities for this relationship are
+  \begin{equation}
+  \forall  i \in  \{1,...,n\}, ~~ |f_i| -  |f^\prime|  \le 0  \label{formula:or1}
+  \end{equation}
+  \begin{equation}
+  \sum\nolimits_{i=1}^{n}{|f_i|} - |f^\prime| \ge 0 \label{formula:or2}
+  \end{equation}
+\end{lem}
+\begin{proof}
+$\bigvee\nolimits_{i=1}^{n}({f_i})  \Leftrightarrow f^\prime $ is \emph{true} according to the Or relationship. Here, $\bigvee\nolimits_{i=1}^{n}({f_i})$ notates $f_1 \lor f_2 \lor ... \lor f_n $. Thus, the formulae $\bigvee\nolimits_{i=1}^{n}({f_i})  \Rightarrow f^\prime $ and $f^\prime \Rightarrow \bigvee\nolimits_{i=1}^{n}({f_i})$ need to be \emph{true}. For the first formula, we can represent it as the CNF and get the resulting formula $\bigwedge \nolimits_{i=1}^{n}({\neg f_i \lor f^\prime})$  to be \emph{true}. Note that for an indexed set of propositions $P = \{p_1,...,p_n\}$, $\bigwedge\nolimits_{i=1}^{n}(p_i)$ means that each proposition in $P$ needs to be \emph{true}.  Thus, we can get $n$ derived linear  inequalities that are listed in the inequality (\ref{formula:or1}). For the second formula $f^\prime \Rightarrow \bigvee\nolimits_{i=1}^{n}({f_i})$, we get $\neg f^\prime \lor \bigvee\nolimits_{i=1}^{n}({f_i})$ to be \emph{true}, that is $ \neg f^\prime \lor f_1 \lor ... \lor f_n $ to be true. So the inequality   (\ref{formula:or2}) can be deduced from the second formula.
+\end{proof}
+
+
+
+\begin{lem}If features $f_1$ ... $f_n$ are the Alternative subfeature of feature $f^\prime$, the linear inequalities for this relationship are
+  \begin{equation}
+  \forall  i \in  \{1,...,n\}, ~~ |f_i| -  |f^\prime|  \le 0
+  \end{equation}
+  \begin{equation}
+  \sum\nolimits_{i=1}^{n}{|f_i|} - |f^\prime| \ge 0
+  \end{equation}
+  \vspace{-4mm}
+  \begin{equation}
+  \sum\nolimits_{i=1}^{n}{|f_i|}  \le 1 \label{formula:alter3}
+  \end{equation}
+  \end{lem}
+\begin{proof}
+Essentially, alternative subfeatures are a special type of \emph{or} features. In the subfeatures of an \emph{or} relationship, at least one subfeature needs to be selected. Whereas, only and exactly one needs to be selected in the alternative subfeatures. Instead of using inequalities  c(9)--c(11) in Table \ref{table:constrains}, the concise inequality (\ref{formula:alter3}) is  used to assure the exclusiveness of all subfeatures.
+\end{proof}
+Except the above 4 types of TCs, there are 3 types of CTCs. The \emph{requirement} of $f^\prime$ for $f$ can be formulated as $f \Rightarrow f^\prime$, and we can deduce $|f^\prime|-|f| \ge 0$ according to Lemma \ref{lem:optional}. Similarly, the \emph{iff} relationship between $f^\prime$ and $f$ is formulated as $f \Leftrightarrow f^\prime$, and we can deduce  $|f^\prime| - |f| = 0$ according to Lemma \ref{lem:mandatory}. Last, we have the last type of CTCs:
+
+\begin{lem}If feature $f$ Excludes feature $f^\prime$, the linear equality for the Exclusion relationship is
+  \begin{equation}
+   |f^\prime| + |f| \le 1
+  \end{equation}
+  \end{lem}
+\begin{proof}
+$f \Rightarrow \neg f^\prime$ is \emph{true} according to the exclusion relationship. Thus we can infer $\neg f  \lor \neg f^\prime$  is \emph{true}. As a CNF, it can be converted to $(1-|f|)+(1-|f^\prime|) \ge 1$, that is $  |f^\prime| + |f| \le 1$.
+\end{proof}
+
+\subsection{The Integer Programming Model of Our Example}\label{sec:spl_ip_problem}
+Let $\vec x$ be a solution, a binary variable vector $\vec x \in \{0,1\}^n$  where variable $x_i$ denotes $|f_i|$.
+For each feature $f_i$, we denote its attributes $Used(f_i)$, $Defect(f_i)$ and $Cost(f_i)$ as coefficient $a_i$, $b_i$ and $c_i$, respectively. We denote the objective function for $obj_j$ as $\mathcal{F}_j(\vec x)$, $j \in \{1,...,k\}$. Subject to the linear inequalities converted from TCs and CTCs,
+the example is formulated  as a multi-objective BIP (MOBIP) problem:
+
+\begin{equation}\label{formula:mop}
+%%\begin{array}{rrclcl}
+%%\displaystyle \min_{x} & \multicolumn{3}{l}{c^T x} \\
+%%\textrm{s.t.} & A x & \geq & b \\
+%%%&\displaystyle \sum_{i=0}^{n} x_i & = & 1 \\
+%%& x_i & \in & \{0,1\} & & \forall i \in \{1...n\} \\
+\begin{array}{ll@{}r@{}r@{}l}
+    \text{Min} & \mathcal{F}_2(\vec x)= \sum\nolimits_{i=1}^{n}(1-x_i) \\[\jot]
+    \text{Min} & \mathcal{F}_3(\vec x)=\sum\nolimits_{i=1}^{n}(a_i\cdot x_i) \\[\jot]
+    \text{Min} & \mathcal{F}_4(\vec x)=\sum\nolimits_{i=1}^{n}(b_i\cdot x_i) \\[\jot]
+    \text{Min} & \mathcal{F}_5(\vec x)=\sum\nolimits_{i=1}^{n}(c_i\cdot x_i) \\[\jot]
+    \text{s.t.} & \text{the inequalities for $conj(M)$ hold}\\[\jot]
+
+%    &  x_1 - x_3  \ge 0   \\
+%    &  x_1 - x_4 \ge 0      \\
+%    &  x_1 - x_5 \ge 0      \\
+%    &  x_1 - x_6 \ge 0      \\
+%    &  x_1 - x_7 \ge 0      \\
+%    &  x_2 - x_8 \ge 0      \\
+%    &  x_2 - x_9 \ge 0      \\
+%    &  x_2 - x_{10} \ge 0      \\
+%    &  -x_2 + x_8 + x_9 + x_{10}\ge 0      \\
+%    &  -x_8 - x_9 - x_{10}\ge -1      \\
+%    &  x_6 - x_{11} \ge 0      \\
+%    &  x_6 - x_{12} \ge 0      \\
+%    &  -x_6 + x_{11} + x_{12} \ge 0      \\
+%    &  x_7 - x_{11} \ge 0      \\
+%    &  x_7 - x_{12} \ge 0      \\
+%    &  -x_7 + x_{11} + x_{12} \ge 0      \\
+  \end{array}
+%%\end{array}
+\end{equation}
+%s.t. the inequalities for c(1)--c(13) in Table \ref{table:constrains} hold.\\

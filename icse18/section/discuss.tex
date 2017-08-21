@@ -1,0 +1,11 @@
+%\subsection{Discussion}\label{sec:application:discuss}
+
+
+\noindent\textbf{Threats to Validity.}
+One threat to validity is about randomly generated values for feature attributes (i.e.,  Cost,  Defects,  and  Used  Before). %Due to the difficulty in getting feature attributes  associated with  real-world  products,
+To  mitigate  the  effect  of  randomness, we  generate  10  sets  of  attributes for each model. Due to the page limit, we just report 2 or 4 representative attribute sets in the evaluation. According to \cite{DBLP:journals/asc/XueZT0CC016} and our observation, impact of attribute values is minor to the results ---  if on two sets of attributes a method is better; then in general (like on ten sets) this method is better. %Besides, for each set, IBED or IBEA is repeatedly executed for 30 times, and  report  the  medium  values  of the  metrics.
+The second threat is about the systems chosen in evaluation. In future, the \emph{EC2}  feature  model \cite{DBLP:journals/fgcs/Garcia-GalanTRC16} and  the  \emph{Drupal} model  \cite{Sanchez2015} need to be included in the evaluation. The last threat is about the parameters of the EAs used as baseline tools. We used the best parameter setting of IBED (and also IBEA) reported by \cite{DBLP:journals/asc/XueZT0CC016}.
+
+\vspace{-2mm}
+%\noindent\textbf{Generality of \ourSol.} \ourSol~is proven to be effective and scalable in solving the optimal feature selection in SBSE. We are eager to try out \ourSol~for other MOO problem, as long as the constraints and multiple objectives are linear. As \ourSol~is designed as a general method for MOIP with linear constraints, some existing benchmarks [??] can be used to evaluate \ourSol. We plan to submit \ourSol~to OR community for review.
+%\subsection{Heuristic, Analytic or Statistic?}\label{sec:discuss:how}

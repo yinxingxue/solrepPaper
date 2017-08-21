@@ -1,0 +1,129 @@
+\section{Introduction}\label{sec:intro}
+
+%{\color{red}a.	MOEA in software engineering and SPL is a case study (Xue ge)}
+%\xyx{The trade-off design problem in SE.}
+
+Software Engineering (SE) has many trade-off design problems in software lifecycle. Quite often, several competing  or  conflicting goals are involved in such problems. Due to the huge search space, finding a set of optimal solutions is not an easy task. According to \cite{DBLP:journals/csur/HarmanMZ12}, few examples are listed as follows: %Such trade-off problems  There is often a bewilderingly large set of choices and finding good solutions can be hard. For instance, the following is an illustrative list of SE questions
+\begin{itemize}
+%\item \textit{And} -- If the parent feature is selected, all the sub-features should be also selected.
+\item  How to select the least number of test cases, while covering the most branches and taking less time?
+\item  How to cluster the code into modules for maximizing cohesion and minimizing coupling?
+\item  How to select a set of product features, which satisfy the requirements and meanwhile optimize several objectives?
+%features that are optional.
+\end{itemize}
+
+To address them, Search based Software Engineering (SBSE) becomes a subfield of SE, where meta-heuristic search algorithms have been dominatingly applied with widespread successes. For examples, NSGA-II and its variants are the most used Multi-objective Evolutionary Algorithm (MOEA) for test case minimization \cite{DBLP:conf/issta/YooH07} and prioritization \cite{DBLP:journals/tse/MarchettoIASS16}. Also, NSGA-II has been reported by researchers as the best MOEA for the approach to balance severity and importance of refactoring opportunities \cite{DBLP:journals/ese/MkaouerKCHD17}. However, Indicator-Based Evolutionary Algorithm (IBEA) is the best MOEA for the optimal feature selection problem \cite{DBLP:conf/icse/SayyadMA13}. The reason is NSGA-II, as a diversity-preferred MOEA, finds much more incorrect solutions than IBEA for highly constrained solution space \cite{DBLP:dblp_conf/kbse/SayyadIMA13}.
+
+%\xyx{The importance of MOEA, and its application in optimal feature selection problem.}
+
+Differently, in this paper, we leverage integer programming (IP) on a SBSE problem. One major advantage of IP methods is that they guarantee the true optimal solutions, under certain conditions, whereas the meta-heuristic approaches typically cannot. In particular, we focus on the \emph{optimal feature selection} problem in Software product line engineering (SPLE). Through this recently popular problem, which has dense constraints and several conflicting objectives, we discuss and compare MOEAs and IP based methods for  multi-objective optimization (MOO).
+
+% is the software development paradigm to develop and maintain many similar yet different products. Industries usually need to built the similar products in a systematic and reuse-based way --- via a software product line (SPL) to reduce development costs, shorten product time to market, and improve product quality and flexibility \cite{DBLP:books/daglib/0087788}. % \cite{DBLP:conf/vamos/NohrerE10}.
+%In the era of a thriving market of mobile and service-based applications, vendors are required to continually reconfigure their applications promptly, to retain and extend their customer base. Therefore, using SPLE to attain competitive advantage in product diversity is one of the keys to the success of modern IT companies.
+
+%\xyx{The importance of optimal feature selection problem.}
+
+SPLE is feature-oriented, as it adopts feature-oriented domain analysis~\cite{tr:foda} for requirements analysis and builds core assets architecture for reuse \cite{Clements01}. \emph{Feature} refers to the modularizable program functionality in development.
+%Technically, SPLE is a two-phase approach composed of domain engineering and application engineering.
+%Application domain is a software area, which contains the common parts among the similar software systems. For example, those different financial  software systems used by the companies are all in the financial domain.
+%The task of \emph{domain engineering (DE)} is to build the feature model and the SPL architecture consisting of core-asset (commonality)  and variant features (competing variability), while the  \emph{application engineering (AE)} focuses on derivation of new products by different customizations of variant features applied onto the core-asset base. %Thus, automation and verification of product derivation is a fundamental problem in SPLE. Exploring an efficient and scalable approach for the optimal feature selection problem is critical to the success of SPLE.
+One fundamental task in SPL is to select features that meet the requirements of customers, avoid possible feature conflicts, and meanwhile optimize design goals in product configuration. Hence, given customer requirements, it is greatly helpful to guide the vendors to make automated decision on selecting optimal features. %to avoid conflicts and have optimal (or near optimal) product attributes.
+
+
+%To enable the assembling of large scale industrial systems,  especially commercial off-the-shelf (COTS) components.    etc. [16] Component-based systems can consist of thousands of components, and ensuring that they are connected, integrated, and assembled in a way that sat- isfies the system requirements is a formidable undertaking that currently requires significant human effort and is the responsibility of the system architect
+
+
+%The Software Product Line Engineering (SPLE) aims at improving software productivity and quality by relying on the similarities that exist among software systems and relevant development process \cite{Clements01}. The idea of SPLE is to derive various similar products in a systematic and reuse-based way. %In last two decades, SPL has been an active research area in software engineering [??].
+%The motivation of SPLE lies in the fact that companies develop and maintain a set of commonly usable core-assets (or so called \textit{features}). These features allow companies to derive multiple variants of the same software system customized for the needs of different customers. Thus, SPLE avoids repetitions, which helps to reduce development/maintenance efforts, to shorten time-to-market and to improve overall quality of software \cite{DBLP:books/daglib/0087788}. In the era of a thriving market of mobile applications and serviced-based software systems, the promise of benefits coming with SPLE is becoming more intriguing. Vendors are allowed to continually reconfigure their applications promptly, to retain and extend their customer base.
+
+%\emph{Feature model} provides a representation of software product lines (SPLs), that could be used to facilitate the reasoning and configuration of SPLs~\cite{tr:foda}.
+
+%\xyx{A real case  of optimal feature problem.}
+
+In practice, as real-world SPLs contain thousands of features, manual feature selection for product configuration according to the given requirements and constraints is extremely complicated. As reported in~\cite{DBLP:conf/icse/SheLBWC11}, Linux X86 kernel contains 6888 features, and 343944 constraints. Further, features are usually associated with quality attributes such as cost, defect and reliability. Owing to such complexity, it is extremely hard for the vendor to select a set of features that complies with requirement constraints yet optimizes the quality attributes according to user preferences. This is called the \emph{optimal feature selection} problem~\cite{DBLP:journals/jss/GuoWWLW11}. %A remedy to the optimal feature selection problem treat the feature selection in product derivation as a trade-off analysis problem of multiple competing objecting analysis in Search-Based Software Engineering (SBSE)~\cite{DBLP:journals/infsof/HarmanJ01}.
+ %In fact, the optimal feature selection problem has been shown to be NP-hard  \cite{DBLP:journals/jss/WhiteDS09}.
+%\cite{DBLP:conf/wcre/XueXJ12}.
+%Personalized product derivation based on user preference aims at capturing the various and transient users requirements. An even more fancy scenario is that personalized product derivation can be automatically processed and verified. Currently, some industrial SPLs may contain \textit{feature models} (tree-structure feature organization) constituted with hundreds to thousands of features, such as Electronic Shop with 290 features \cite{S.P.L.O.T}\cite{DBLP:conf/wcre/XueXJ10} , and Linux Kernel with 6800 features \cite{DBLP:conf/splc/SinceroS08}\cite{DBLP:conf/wcre/XueXJ12}. Thus, can modern techniques automate the process and verification of the feature-based product derivation in a scalable way?
+
+%\xyx{Brief on literature review.}
+%Existing works on this problem are in two lines.% The first line is about reasoning about the consistency or conflict of features, in which theorem proving \cite{DBLP:conf/pfe/MannionC03}, Constraint Satisfaction Problems (CSP) \cite{DBLP:conf/caise/BenavidesTC05}, OWL DL ontologies \cite{DBLP:journals/ws/WangLSZP07}, model checking \cite{DBLP:conf/icse/ClassenHSL11}\cite{DBLP:conf/icse/ClassenHSLR10} --- essentially, formal methods --- are used to resolve the inconsistency checking in product derivation. %Section \ref{related} elaborates the previous approaches based on formal methods.Formal methods can be precise, but not scalable for large feature models \cite{DBLP:conf/icse/CordyCPSHL12}.
+
+%A remedy for scalability pitfalls of the approaches that are backed up by formal methods is to treat the problem of automated product derivation as a %trade-off analysis problem of multiple competing objecting analysis in
+%Search-Based Software Engineering (SBSE) problem \cite{DBLP:conf/splc/HarmanJKLPZ14}.
+%2). The motivation of our work, we need to show the complexity of the problem as well as the innovations of the approach.
+%{\color{red}b.	MOEA has been proposed to solve the problem, but search space too big}
+%SBSE has been applied to resolve those NP-hard SE problems via metaheuristic search techniques \cite{DBLP:journals/iee/ClarkeDHHJLMMRRS03} such as evolutionary algorithms, simulated annealing, ant colony optimization and so on.
+%
+
+To address this problem, two earlier studies adopted Filtered Cartesian Flattening (FCF)~\cite{DBLP:journals/jss/WhiteDS09} or Genetic Algorithm (GA)~\cite{DBLP:journals/jss/GuoWWLW11}. In 2013, MOEAs were applied to solve this problem and IBEA was reported to be the best MOEA \cite{DBLP:conf/icse/SayyadMA13}. Along this line, studies of improvements on IBEA \cite{DBLP:dblp_conf/kbse/SayyadIMA13}\cite{DBLP:conf/issta/TanXCSLD15} and integration of IBEA with other techniques (e.g., constraint solving \cite{DBLP:conf/icse/HenardPHT15} and Differential Evolution (DE) \cite{DBLP:journals/asc/XueZT0CC016}) represent the latest progress on this problem. Among them, IBED \cite{DBLP:journals/asc/XueZT0CC016} adopts a dual-population design (one population for IBEA and another for DE).%, using the idea of co-evolution.
+Hence, MOEAs are the indispensable parts of the state-of-the-art approaches to this problem.
+
+
+%\xyx{The drawbacks of heuristic approaches.}
+
+By virtue of scalability, MOEAs become the default methods for MOO in many application domains. However, are MOEA-based methods really the only silver bullet for such SBSE problem? As heuristic and non-deterministic algorithms,  MOEA-based approaches at least face the following four drawbacks:
+
+\begin{enumerate}[itemsep=0mm]
+\item  Algorithm convergence. Customization of standard MOEA operators may fail the convergence of the MOEAs \cite{DBLP:journals/ec/LaumannsTDZ02}.
+\item  Even on small problems, non-guarantee of solution set completeness.
+\item  Non-guarantee of finding Pareto-optimal solutions.
+\item  Non-guarantee of finding evenly-distributed solutions \cite{DBLP:journals/ec/LaumannsTDZ02}, while retaining the correctness of solutions (e.g., Diversity-preferred NSGA-II cannot achieve correctness~\cite{DBLP:conf/icse/SayyadMA13}).  %The diversity of solutions are preferred, but not guaranteed. {\color {red} crowding distance in NSGA is to ensure diversity, better change the tone}
+\end{enumerate}
+
+All these drawbacks are inherent in the nature of heuristic algorithms. To eliminate them, is it feasible to solve the optimal feature selection problem from a different perspective?
+%The MOP approaches based on MOEAs are popular in SBSE, as it allows computation of an approximation of the entire Pareto front. %The main disadvantage of MOEAs is their lower speed and the Pareto optimality of the solutions cannot be guaranteed --- none of the generated solutions dominates the others\footnote{\url{https://en.wikipedia.org/wiki/Multi-objective_optimization}}. In addition, even if the solution space is small, MOEAs cannot guarantee the completeness of the found non-dominated solutions. After all, search based heuristic approaches may not find all the optimal solutions.
+%Considering
+Let us revisit the nature of this SBSE problem --- decision variables are binary and all constraints and objectives are linear  (see  \S\ref{sec:background:mop} and \S\ref{sec:formulate}). Hence, integer programming (IP), more specifically integer linear programming, is applicable for this problem as long as  multiple objectives can be reduced to one.
+
+%\xyx{The naive solutions.}
+%{\color {red} Haimes, Y. Y., L. S. Lasdon, and D. A. Wismer 1971. On a bicriterion formulation of the problems of integrated system identification and system optimization. IEEE Transactions on Systems Man and Cybernetics, (1), 296-297.}
+
+In $epsilon$-constraint (\naiveSol) method \cite{e-constraint}, the straightforward idea is to convert the objectives $1$ to $k-1$ into the range constraints and use the $k$-th objective as the objective function of IP. The operation procedure has several iterations, each increases (or decreases) the right-hand side of the constrained-objective by a step and runs IP method. The \naiveSol~method and its improvement CWMOIP (Constraint Weighted Multi-objective Integer Programming) \cite{DBLP:journals/eor/OzlenA09} are elaborated in \S\ref{sec:naiveSolutions}. %However, the naive solution and CWMOIP might not be scalable for medium-to-large systems which have more than one hundred features.
+During the evaluation, we find that the brute-force iteration of all objectives' ranges will call IP too many times, make solving running forever. This indicates:
+\vspace{-2mm}
+\begin{center}
+ \emph{\lq\lq{}Existing MOIP methods ($\epsilon$-constraint and CWMOIP) for this problem are capable on small systems, but not on large ones.\rq\rq}
+\end{center}
+\vspace{-1mm}
+%\xyx{Yanfu:: I may need your input for this.}
+%Messac A, Mattson C A. Normal Constraint Method with Guarantee of Even Representation of Complete Pareto Frontier[J]. Aiaa Journal, 2012, 42(10):2101-2111.
+%Smith R L. Efficient Monte Carlo Procedures for Generating Points Uniformly Distributed Over Bounded Regions[J]. Operations Research, 1984, 32(6):1296-1308.
+\textbf{Technical Innovation.} For large problem, it is practical and meaningful to generate a good representation of the Pareto front. Therefore, we propose to combine the hit-and-run (H\&R)  method \cite{DBLP:journals/ior/Smith84} with normal constraints (NC) method \cite{normalCons}. NC method, was originally proposed for generating Pareto front representation for continuous optimization problem. %( consists of four main steps: 1) determine the utopia plane which is bounded by the optimal value of each individual objective; 2) select uniformly distributed reference points on the utopia plan; 3) for each reference point insert $(k-1)$ constrained-objectives vertical to utopia plan to cut the solution space; 4) optimize the $k$th objective within the cut solution space. Repeat steps 3) and 4) to achieve the Pareto-optimal front.)
+H\&R is efficient in randomly generating uniformly-distributed points inside any bounded region. Due to the high dimensionality and complex boundaries of the utopia plane (see definition in \S\ref{sec:solution}), we propose  to improve NC method by using H\&R. %in step 2) of the NC method.
+The essential idea is to use uniformly-distributed reference points on the utopia plane to generate representative Pareto-optimal solutions (\S\ref{sec:solution}). The advantages of our method are three-fold: 1). guarantee the true optimal solution; 2). guarantee the spread of the Pareto-front; 3). computationally efficient. We call our method \ourSol. %Especially, for the given scope of certain objective(s), the analytic approach will be more effective than the blind heuristic searching approach.
+%However, the work is not scalable to large feature models. It is reported by~\cite{DBLP:conf/icse/SayyadMA13} such that IBEA takes around 3 hours with 50 million of executions to achieve only 50\% of correctness in the feasible feature sets that are output by the algorithm.
+
+
+
+%\xyx{The briefing of the results.}
+
+We compare the state-of-the-art MOEA for optimal feature selection (i.e., IBED \cite{DBLP:journals/asc/XueZT0CC016}) with IP-based methods on SPLOT~\cite{DBLP:conf/oopsla/MendoncaBC091} and LVAT~\cite{LVAT} repositories. Results show that, in most cases,  \ourSol~finds significantly more non-dominant solutions than IBED in similar or less time (\S\ref{sec:application}). Thus, we make the first attempt to solve this problem on large systems (e.g., Linux X86) \emph{via IP-methods}. A take-home message is  %Especially on both two parameter sets of \emph{LinuxX86}, \ourSol~finds more than 1400 non-dominant solutions, while IBED with three seed solutions  find only ??? non-dominant solutions. %300+ solutions, among which only 10+ solutions are non-dominant.
+
+\vspace{-1mm}
+\begin{center}
+ \emph{\lq\lq{}The improved IP method (NC+H\&R) can scale up to large systems, even being better than MOEAs, when constraints and objectives are linear.\rq\rq}
+\end{center}
+\vspace{-1mm}
+
+Our main contributions are summarized below.
+
+\begin{enumerate}[itemsep=0.1mm]
+%\item We propose a preprocessing method that could effectively discard the features that do not need to be included in an EA for reducing the state space of searching.
+\item By converting logical formulae into inequalities, we formulate this problem as a multiple-objective IP model.
+\item We apply \naiveSol~method  and its improvement CWMOIP to find complete solutions on small systems.
+\item Inspired by advances in OR, we propose an innovative IP-based method, \ourSol,  to achieve the scalability and effectiveness. \ourSol~is published at \cite{ourtool}.
+\item We compare \ourSol~with IBED and IBEA on the benchmark systems. Results prove the effectiveness and efficiency of  \ourSol. Especially on \emph{Linux X86}, most solutions of IBED are dominated by solutions of \ourSol.
+
+%We evaluate the usefulness and performance of our approach,  %benefits brought by the feedback-directed EAs using by comparing it with the state-of-the-art approach (feedback directed Indicated Based Evolutional Algorithm \cite{DBLP:conf/issta/TanXCSLD15}) on cases that are available publicly. We also demonstrate the merits of our approach in finding more non-dominated solutions, given the scope of certain objective(s). %The feedback-directed EAs have shown a significant improvement on finding more optimized valid solutions, compared with the original unguided EAs used in~\cite{DBLP:conf/icse/SayyadMA13,DBLP:dblp_conf/kbse/SayyadIMA13}.
+
+%\item We make use of the seeding method as proposed in~\cite{DBLP:dblp_conf/kbse/SayyadIMA13} for finding valid solutions in the Linux X86 feature model, which contains 6888 features. Our approach combining with the seeding method has shortened the search time for more than 200 times than the original seeding approach as proposed in~\cite{DBLP:dblp_conf/kbse/SayyadIMA13}.
+\end{enumerate}
+%
+%\paratitle{Outline}
+%% The rest of this paper is structured as follows.
+%Section~\ref{sec:background} introduces the background of this work.
+%Section~\ref{sec:approach} presents our feedback-directed EA.
+%%Section~\ref{sec:combination} shows the application of \DRO{} with MIP and genetic algorithm methods for optimal service selection.
+%Section~\ref{sec:evaluation} provides the evaluation of our approach.
+%Section~\ref{sec:related}  reviews related works.
+%Finally, Section~\ref{sec:conclusion} concludes and outlines future work.

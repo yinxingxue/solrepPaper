@@ -1,0 +1,209 @@
+\documentclass[sigconf]{acmart}
+
+\usepackage{amssymb}
+\usepackage{paralist}
+\usepackage{makecell}
+\usepackage{graphicx}
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+\usepackage{color}
+\usepackage{url}
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+%\usepackage[pdftex,pagebackref,colorlinks]{hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{darkgreen}{rgb}{0, 0.5, 0}
+\definecolor{darkpurple}{rgb}{0.7, 0, 0.7}
+\definecolor{red}{rgb}{1,0,0}
+
+
+
+ \setlength{\textfloatsep}{1pt}
+%\usepackage[
+%		colorlinks=true,
+%	\ifdefined \WithComments
+%		pagebackref=true,
+%	\fi
+%	 citecolor=darkgreen,
+%		linkcolor=darkblue,
+%		urlcolor=darkpurple,
+%	]{hyperref}
+
+\usepackage{epstopdf}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+%\usepackage[colorlinks=true,citecolor=blue,linkcolor=blue]{hyperref}
+\usepackage{balance}
+\usepackage{multirow}
+\usepackage{bigstrut}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage[colorlinks,linkcolor=blue,citecolor=red]{hyperref}
+
+\newcommand{\naiveSol}{$\epsilon$-constraint}
+\newcommand{\ourSol}{\textsc{SolRep}}
+
+\newcommand{\JCS}{\mathit{JCS}}
+\newcommand{\FeaSet}{\mathit{Fea(M)}}
+\newcommand{\intset}{\mathcal {P} (\mathbb{Z})}
+\newcommand{\sizes}[1]{\vert#1\vert}
+\newcommand{\paratitle}[1]{\noindent\textbf{#1}. }
+\newcommand\assign{\leftarrow}
+\newcommand{\mfigure}[1]{Figure~\ref{#1}}
+\newcommand{\mtable}[1]{Table~\ref{#1}}
+\newcommand{\msection}[1]{Section~\ref{#1}}
+\newcommand{\mequation}[1]{Equation~(\ref{#1})}
+\newcommand{\malgo}[1]{Algorithm~\ref{#1}}
+\newcommand{\grandr}{{\mathbb R}}
+\newcommand{\grandZ}{{\mathbb Z}}
+\newcommand{\grandB}{{\mathbb B}}
+\newcommand{\FV}{{f_V}}
+\newcommand{\Py}{\Pi}
+\newcommand{\grandZPlus}{{\mathbb Z}_{> 0}}
+\newtheorem{myDef}{Definition}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\usepackage[figuresright]{rotating}
+
+\ifdefined \WithComments
+\newcommand{\xyx}[1]{\textcolor{red}{\textbf{#1}}}
+\newcommand{\rev}[1]{\textcolor{red}{#1}}
+\newcommand{\lyf}[1]{\textcolor{blue}{\textbf{#1}}}
+\else
+\newcommand{\xyx}[1]{}
+\newcommand{\rev}[1]{\textcolor{black}{#1}}
+\newcommand{\lyf}[1]{}
+\fi
+
+%\renewcommand\normalsize{%
+%   \@setfontsize\normalsize\@xpt\@xiipt
+%   \abovedisplayskip 1\p@ \@plus2\p@ \@minus5\p@
+%   \abovedisplayshortskip \z@ \@plus3\p@
+%   \belowdisplayshortskip 6\p@ \@plus3\p@ \@minus3\p@
+%   \belowdisplayskip \abovedisplayskip
+%   \let\@listi\@listI}
+
+\usepackage{booktabs} % For formal tables
+% Copyright
+%\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+\setcopyright{rightsretained}
+%\setcopyright{usgov}
+%\setcopyright{usgovmixed}
+%\setcopyright{cagov}
+%\setcopyright{cagovmixed}
+
+
+% DOI
+\acmDOI{10.475/123_4}
+
+% ISBN
+\acmISBN{123-4567-24-567/08/06}
+
+%Conference
+\acmConference[ICSE'18]{ACM International Conference on Software Engineering}{May 2018}{Gothenburg, Sweden}
+\acmYear{2018}
+\copyrightyear{2018}
+
+\acmPrice{15.00}
+
+
+\begin{document}
+\title{Using Multi-Objective Integer Programming for the Optimal Feature Selection Problem}
+%\titlenote{Produces the permission block, and   copyright information}
+\subtitle{A New Perspective}
+%\subtitlenote{The full version of the author's guide is available as \texttt{acmart.pdf} document}
+
+
+%\author{Yinxing Xue}
+%\authornote{Dr.~Trovato insisted his name be first.}
+%\orcid{1234-5678-9012}
+%\affiliation{%
+%  \institution{Microsoft}
+%  \streetaddress{P.O. Box 1212}
+%  \city{Suzhou}
+%  \state{China}
+%  \postcode{215002}
+%}
+%\email{YinXing.Xue@microsoft.com}
+%
+%\author{Yan-Fu Li}
+%%\authornote{Dr.~Trovato insisted his name be first.}
+%\orcid{1234-5678-9012}
+%\affiliation{%
+%  \institution{IE department, Tsinghua University}
+%  \streetaddress{P.O. Box 1212}
+%  \city{Beijing}
+%  \state{China}
+%  \postcode{100087}
+%}
+%\email{trovato@corporation.com}
+% The default list of authors is too long for headers}
+\renewcommand{\shortauthors}{Anonymous  et al.}
+
+
+\begin{abstract}
+Multi-objective Evolutionary Algorithms (MOEAs) have been successfully and widely applied for solving search-based software engineering problems. For example, the optimal feature selection problem in software product line is typically addressed by the approaches based on Indicator-based Evolutionary Algorithm (IBEA). In this study, we first expose the mathematical nature of this problem --- multi-objective binary integer linear programming. Then, we implement/propose three mathematical programming approaches to solve this problem at different scales. For small-scale problems (less than 100 features), we implement two established approaches to find all exact solutions. For medium-to-large problems (more than 100 features), we propose one efficient approach that can generate a representation of the entire Pareto front in linear time complexity. The empirical results show that our proposed method can find significantly more non-dominant solutions in similar or less execution time, in comparison with the state-of-the-art tool that combines IBEA and Differential Evolution.%\footnote{This is an abstract footnote}
+\end{abstract}
+
+%
+% The code below should be generated by the tool at
+% http://dl.acm.org/ccs.cfm
+% Please copy and paste the code instead of the example below.
+%
+\begin{CCSXML}
+<ccs2012>
+ <concept>
+  <concept_id>10010520.10010553.10010562</concept_id>
+  <concept_desc>Computer systems organization~Embedded systems</concept_desc>
+  <concept_significance>500</concept_significance>
+ </concept>
+ <concept>
+  <concept_id>10010520.10010575.10010755</concept_id>
+  <concept_desc>Computer systems organization~Redundancy</concept_desc>
+  <concept_significance>300</concept_significance>
+ </concept>
+ <concept>
+  <concept_id>10010520.10010553.10010554</concept_id>
+  <concept_desc>Computer systems organization~Robotics</concept_desc>
+  <concept_significance>100</concept_significance>
+ </concept>
+ <concept>
+  <concept_id>10003033.10003083.10003095</concept_id>
+  <concept_desc>Networks~Network reliability</concept_desc>
+  <concept_significance>100</concept_significance>
+ </concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Computer systems organization~Embedded systems}
+\ccsdesc[300]{Computer systems organization~Redundancy}
+\ccsdesc{Computer systems organization~Robotics}
+\ccsdesc[100]{Networks~Network reliability}
+
+
+\keywords{ACM proceedings, \LaTeX, text tagging}
+
+
+\maketitle
+\input{section/intro}
+
+\input{section/problem}
+\input{section/convert}
+\input{section/intProgram}
+\input{section/ourApproach}
+\input{section/results}
+\input{section/discuss}
+\input{section/related}
+%\input{relatedOld}
+\input{section/conclusion}
+\newpage
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{section/reference}
+
+\end{document}
