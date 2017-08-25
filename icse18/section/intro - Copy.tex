@@ -1,11 +1,24 @@
 \section{Introduction}\label{sec:intro}
 
- 
-%However, Indicator-Based Evolutionary Algorithm (IBEA) is the best MOEA for the optimal feature selection problem \cite{DBLP:conf/icse/SayyadMA13}. The reason is NSGA-II, as a diversity-preferred MOEA, finds much more incorrect solutions than IBEA for highly constrained solution space \cite{DBLP:dblp_conf/kbse/SayyadIMA13}.
+%{\color{red}a.	MOEA in software engineering and SPL is a case study (Xue ge)}
+%\xyx{The trade-off design problem in SE.}
 
-%Differently, in this paper, we leverage integer programming (IP) on a SBSE problem. One major advantage of IP methods is that they guarantee the true optimal solutions, under certain conditions, whereas the meta-heuristic approaches typically cannot. In particular, we focus on the \emph{optimal feature selection} problem in Software product line engineering (SPLE). Through this recently popular problem, which has dense constraints and several conflicting objectives, we discuss and compare MOEAs and IP based methods for  multi-objective optimization (MOO).
+Software Engineering (SE) has many trade-off design problems in software lifecycle. Quite often, several competing  or  conflicting goals are involved in such problems. Due to the huge search space, finding a set of optimal solutions is not an easy task. According to \cite{DBLP:journals/csur/HarmanMZ12}, few examples are listed as follows: %Such trade-off problems  There is often a bewilderingly large set of choices and finding good solutions can be hard. For instance, the following is an illustrative list of SE questions
+\begin{itemize}
+%\item \textit{And} -- If the parent feature is selected, all the sub-features should be also selected.
+\item  How to select the least number of test cases, while covering the most branches and taking less time?
+\item  How to cluster the code into modules for maximizing cohesion and minimizing coupling?
+\item  How to select a set of product features, which satisfy the requirements and meanwhile optimize several objectives?
+%features that are optional.
+\end{itemize}
 
-In order to cater for needs from various customers, many similar yet different products are developed and maintained (e.g., similar product variants from a software product family). Industries usually need to built the similar products in a systematic and reuse-based way --- via a software product line (SPL) to reduce development costs, shorten product time to market, and improve product quality and flexibility \cite{DBLP:books/daglib/0087788}. % \cite{DBLP:conf/vamos/NohrerE10}.
+To address them, Search based Software Engineering (SBSE) becomes a subfield of SE, where meta-heuristic search algorithms have been dominatingly applied with widespread successes. For examples, NSGA-II and its variants are the most used Multi-objective Evolutionary Algorithm (MOEA) for test case minimization \cite{DBLP:conf/issta/YooH07} and prioritization \cite{DBLP:journals/tse/MarchettoIASS16}. Also, NSGA-II has been reported by researchers as the best MOEA for the approach to balance severity and importance of refactoring opportunities \cite{DBLP:journals/ese/MkaouerKCHD17}. However, Indicator-Based Evolutionary Algorithm (IBEA) is the best MOEA for the optimal feature selection problem \cite{DBLP:conf/icse/SayyadMA13}. The reason is NSGA-II, as a diversity-preferred MOEA, finds much more incorrect solutions than IBEA for highly constrained solution space \cite{DBLP:dblp_conf/kbse/SayyadIMA13}.
+
+%\xyx{The importance of MOEA, and its application in optimal feature selection problem.}
+
+Differently, in this paper, we leverage integer programming (IP) on a SBSE problem. One major advantage of IP methods is that they guarantee the true optimal solutions, under certain conditions, whereas the meta-heuristic approaches typically cannot. In particular, we focus on the \emph{optimal feature selection} problem in Software product line engineering (SPLE). Through this recently popular problem, which has dense constraints and several conflicting objectives, we discuss and compare MOEAs and IP based methods for  multi-objective optimization (MOO).
+
+% is the software development paradigm to develop and maintain many similar yet different products. Industries usually need to built the similar products in a systematic and reuse-based way --- via a software product line (SPL) to reduce development costs, shorten product time to market, and improve product quality and flexibility \cite{DBLP:books/daglib/0087788}. % \cite{DBLP:conf/vamos/NohrerE10}.
 %In the era of a thriving market of mobile and service-based applications, vendors are required to continually reconfigure their applications promptly, to retain and extend their customer base. Therefore, using SPLE to attain competitive advantage in product diversity is one of the keys to the success of modern IT companies.
 
 %\xyx{The importance of optimal feature selection problem.}
@@ -67,11 +80,11 @@ Let us revisit the nature of this SBSE problem --- decision variables are binary
 
 In $epsilon$-constraint (\naiveSol) method \cite{e-constraint}, the straightforward idea is to convert the objectives $1$ to $k-1$ into the range constraints and use the $k$-th objective as the objective function of IP. The operation procedure has several iterations, each increases (or decreases) the right-hand side of the constrained-objective by a step and runs IP method. The \naiveSol~method and its improvement CWMOIP (Constraint Weighted Multi-objective Integer Programming) \cite{DBLP:journals/eor/OzlenA09} are elaborated in \S\ref{sec:naiveSolutions}. %However, the naive solution and CWMOIP might not be scalable for medium-to-large systems which have more than one hundred features.
 During the evaluation, we find that the brute-force iteration of all objectives' ranges will call IP too many times, make solving running forever. This indicates:
-
+ 
 \begin{center}
  \emph{\lq\lq{}Existing MOIP methods ($\epsilon$-constraint and CWMOIP) for this problem are capable on small systems, but not on large ones.\rq\rq}
 \end{center}
-
+ 
 %\xyx{Yanfu:: I may need your input for this.}
 %Messac A, Mattson C A. Normal Constraint Method with Guarantee of Even Representation of Complete Pareto Frontier[J]. Aiaa Journal, 2012, 42(10):2101-2111.
 %Smith R L. Efficient Monte Carlo Procedures for Generating Points Uniformly Distributed Over Bounded Regions[J]. Operations Research, 1984, 32(6):1296-1308.

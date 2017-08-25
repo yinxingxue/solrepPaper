@@ -14,7 +14,7 @@ In SPL,  \emph{feature} further refers to the requirements and implementations o
 
 Feature model organizes the features inside in a tree-like structure. %The structural relationships between a parent (or compound) feature and its child features (or subfeatures) can be specified as:
 Given a parent (or compound) feature $f^\prime$ and its child features (or subfeatures) \{$f_1,...,f_n$\}, four types of tree-structure constraints (TCs) exist and are defined as follow~\cite{DBLP:conf/splc/Batory05}:
- 
+
 \begin{itemize}[itemindent=*]
 %\item \textit{And} -- If the parent feature is selected, all the sub-features should be also selected.
 \item  $f_i$ is a \emph{mandatory} subfeature --- $f_i \Leftrightarrow f^\prime$,
@@ -25,7 +25,7 @@ Given a parent (or compound) feature $f^\prime$ and its child features (or subfe
 \end{itemize}
 
 Given two features $f_1$ and $f_2$ that hold no TCs, three types of cross-tree semantic constraints  (CTCs) may exist, i.e.,\emph{iff}, \emph{requires} and \emph{excludes} \cite{DBLP:conf/splc/Batory05}:
- 
+
 \begin{itemize}[itemindent=*]
 \item $f_1$ \emph{iff} $f_2$ --- $f_1 \Leftrightarrow f_2$,
 \item $f_1$ \emph{requires} $f_2$ --- $f_1 \Rightarrow f_2$,
@@ -72,7 +72,8 @@ The feature model of a Java Chat System ($\JCS$) is illustrated in Fig. \ref{fig
 
 %The feature model listed in Fig. \ref{fig:re} can be captured by the constraints that are listed in~\mtable{table:constrains}. The constraints are specified according to the semantics of feature model.  %Constraint c(1) specifies that the root feature must be present, to prevent a trivial feature model with no selected feature. Constraint c(2) specifies the mandatory feature \textit{Output} and constraints c(3) -- c(7) specify constraints on the other five optional subfeatures. The subfeatures of \textit{Output} are in an \textit{Alternative} relationship. This is specified using constraints c(8) -- c(11). Constraint c(8) states that \textit{Output} is selected, if and only if at least one of \textit{CMD}, \textit{GUI} and \textit{GUI2} is selected. Constraints c(9) -- c(11) specify that at most one feature from \textit{CMD}, \textit{GUI} and \textit{GUI2} can be chosen. The subfeatures of \textit{Encryption} are in \textit{Or} relationship. The constraint c(12) denotes if \textit{Encryption} is selected, then at least one feature from \textit{Caesar} and \textit{Reverse} needs to be selected, and vice versa.
 %The only CTC of $\JCS$ is captured in the constraint c(13).
-Given a feature model \emph{M}, we refer TCs and CTCs of \emph{M} as  the conjunction of constraints of $M$, denoted by $\mathit{conj(M)}$. Let $\mathit{Fea(M)}$ denote the feature set of $M$, $\mathit{Fea(JCS)} = \{\scriptsize{\mathit{Chat}, \mathit{Output}, \mathit{Logging}, \mathit{Authorization}, \mathit{Color}, \mathit{Encryption},} \\ \scriptsize{\mathit{Encryption\_OR}, \mathit{GUI}, \mathit{CMD}, \mathit{GUI2}, \mathit{Caesar}, \mathit{Reverse}}\}$.% and $\mathit{\vert Fea(JCS) \vert}$=12.
+Given a feature model \emph{M}, we refer TCs and CTCs of \emph{M} as  the conjunction of constraints of $M$, denoted by $\mathit{conj(M)}$. Let $\mathit{Fea(M)}$ denote the feature set of $M$. Thus, for the features in \emph{JCS}, we have $\mathit{Fea(JCS)} = \{\scriptsize{\mathit{Chat}, \mathit{Output}, \mathit{Logging}, \mathit{Authorization}, \mathit{Color}, \mathit{Encryption},} \\
+\mathit{Encryption\_OR}, \mathit{GUI}, \mathit{CMD}, \mathit{GUI2}, \mathit{Caesar}, \mathit{Reverse}\}$.% and $\mathit{\vert Fea(JCS) \vert}$=12.
 
 %Given a feature model $M$,
 %a \emph{feature valuation} is a function
